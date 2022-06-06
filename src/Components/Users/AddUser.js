@@ -3,7 +3,7 @@ import Button from "../UI/Button";
 import classes from "./AddUser.module.css";
 import { useState } from "react";
 
-const AddUser = () => {
+const AddUser = (props) => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const nameChangeHandler = (event) => {
@@ -16,7 +16,7 @@ const AddUser = () => {
     event.preventDefault();
     if (!name.trim() && !age.trim()) return;
     if (+age <= 0) return;
-    console.log(name, age);
+    props.onAddUser({ name, age, id: Math.random().toString() });
     setAge("");
     setName("");
   };
