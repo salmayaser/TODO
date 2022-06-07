@@ -1,25 +1,22 @@
 import Card from "../UI/Card";
 import Button from "../UI/Button";
 import classes from "./AddUser.module.css";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Modal from "../UI/Modal";
 
 const AddUser = (props) => {
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
+  const nameInp = useRef();
+  const ageInp = useRef();
   const [isError, setIsError] = useState(false);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
-  const nameChangeHandler = (event) => {
-    setName(event.target.value);
-  };
-  const ageChangeHandler = (event) => {
-    setAge(event.target.value);
-  };
+
   const onCancelHandler = () => {
     setIsError(false);
   };
   const addUserHandler = (event) => {
+    const name = nameInp.current.value;
+    const age = ageInp.current.value;
     event.preventDefault();
     if (!name.trim() && !age.trim()) {
       setIsError(true);
@@ -34,8 +31,8 @@ const AddUser = (props) => {
       return;
     }
     props.onAddUser({ name, age, id: Math.random().toString() });
-    setAge("");
-    setName("");
+    nameInp.current.value = "";
+    ageInp.current.value = "";
   };
   return (
     <div>
@@ -51,23 +48,11 @@ const AddUser = (props) => {
           <form onSubmit={addUserHandler}>
             <div>
               <label htmlFor="name">Name</label>
-              <input
-                onChange={nameChangeHandler}
-                type="text"
-                id="name"
-                name="name"
-                value={name}
-              />
+              <input type="text" id="name" name="name" ref={nameInp} />
             </div>
             <div>
               <label htmlFor="age">Age</label>
-              <input
-                onChange={ageChangeHandler}
-                type="number"
-                id="age"
-                name="age"
-                value={age}
-              ></input>
+              <input type="number" id="age" name="age" ref={ageInp}></input>
             </div>
             <Button type="submit">Add User</Button>
           </form>
